@@ -1,4 +1,11 @@
-## Hi there 👋
+## Hi there 👋 I'm Roger
+I'm just starting my journey on Linkedin, looking forward to set my first goal as follow:
+
+- set up personal blog on Github Pages
+- ESP32 projects
+- C# learning progress
+
+Let's see what little Roger can achieve in this exam period🤨
 
 <!--
 **RogerFooo/RogerFooo** is a ✨ _special_ ✨ repository because its `README.md` (this file) appears on your GitHub profile.
