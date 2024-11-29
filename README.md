@@ -7,7 +7,7 @@ I'm just starting my journey on Linkedin, looking forward to set my first goal a
 
 Let's see what little Roger can achieve in this exam period🤨
 
-Page 🔗: https://rogerfooo.github.io/RogerFooo/
+Page 🔗: https://rogerfooo.github.io/rogerfooyiqi/
 
 <!--
 **RogerFooo/RogerFooo** is a ✨ _special_ ✨ repository because its `README.md` (this file) appears on your GitHub profile.
