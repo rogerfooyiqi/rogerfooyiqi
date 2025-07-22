@@ -1,197 +1,482 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <meta name="author" content="">
-
-    <title>Clean Blog</title>
-
-    <!-- Bootstrap Core CSS -->
-    <link href="css/bootstrap.min.css" rel="stylesheet">
-
-    <!-- Custom CSS -->
-    <link href="css/clean-blog.min.css" rel="stylesheet">
-
-    <!-- Custom Fonts -->
-    <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
-    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
-    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
-
-    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-    <![endif]-->
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Pervasive Impact of Artificial Intelligence</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Calm Harmony Neutrals -->
+    <!-- Application Structure Plan: The application is designed as an interactive dashboard. The primary navigation is industry-based, allowing users to filter the content dynamically. This structure transforms the linear report into an exploratory experience. It starts with a high-level overview, then allows users to deep-dive into specific industries of interest, comparing their applications, benefits, and key data points. Finally, it consolidates cross-cutting themes like technologies and challenges into digestible, interactive formats. This was chosen to make the dense information manageable and to facilitate user-driven discovery and comparison, which is more engaging than a static, scrolling document. -->
+    <!-- Visualization & Content Choices: The app uses a mix of visualizations to match the data's goal. A line chart shows the projected market growth (Goal: Change). Bar charts compare key metrics like accuracy or efficiency gains (Goal: Compare). Interactive cards present applications and benefits (Goal: Organize/Inform). A cross-industry grid shows technology usage (Goal: Relationships). An accordion organizes challenges (Goal: Organize). This variety, powered by Chart.js for canvas-based charts and dynamic HTML/CSS for other elements, ensures clarity and engagement without using SVG or Mermaid JS, adhering to the constraints. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8f9fa;
+            color: #212529;
+        }
+        .nav-button {
+            transition: all 0.3s ease;
+            border-bottom: 2px solid transparent;
+        }
+        .nav-button.active, .nav-button:hover {
+            border-bottom-color: #4f46e5;
+            color: #4f46e5;
+        }
+        .content-section {
+            display: none;
+            animation: fadeIn 0.5s;
+        }
+        .content-section.active {
+            display: block;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 400px;
+            max-height: 50vh;
+        }
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+        }
+    </style>
 </head>
+<body class="antialiased">
 
-<body>
-
-    <!-- Navigation -->
-    <nav class="navbar navbar-default navbar-custom navbar-fixed-top">
-        <div class="container-fluid">
-            <!-- Brand and toggle get grouped for better mobile display -->
-            <div class="navbar-header page-scroll">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand" href="index.html">Start Bootstrap</a>
-            </div>
-
-            <!-- Collect the nav links, forms, and other content for toggling -->
-            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                <ul class="nav navbar-nav navbar-right">
-                    <li>
-                        <a href="index.html">Home</a>
-                    </li>
-                    <li>
-                        <a href="about.html">About</a>
-                    </li>
-                    <li>
-                        <a href="post.html">Sample Post</a>
-                    </li>
-                    <li>
-                        <a href="contact.html">Contact</a>
-                    </li>
-                </ul>
-            </div>
-            <!-- /.navbar-collapse -->
-        </div>
-        <!-- /.container -->
-    </nav>
-
-    <!-- Page Header -->
-    <!-- Set your background image for this header on the line below. -->
-    <header class="intro-header" style="background-image: url('img/home-bg.jpg')">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-                    <div class="site-heading">
-                        <h1>Clean Blog</h1>
-                        <hr class="small">
-                        <span class="subheading">A Clean Blog Theme by Start Bootstrap</span>
-                    </div>
-                </div>
+    <header class="bg-white shadow-sm sticky top-0 z-50">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col sm:flex-row justify-between items-center py-4">
+                <h1 class="text-xl sm:text-2xl font-bold text-gray-800 mb-4 sm:mb-0 text-center sm:text-left">AI's Impact: An Interactive Report</h1>
+                <nav id="industry-nav" class="flex flex-wrap justify-center gap-x-4 gap-y-2 sm:gap-x-6">
+                    <button data-industry="overview" class="nav-button font-medium text-gray-600 pb-1 active">Overview</button>
+                    <button data-industry="finance" class="nav-button font-medium text-gray-600 pb-1">Finance</button>
+                    <button data-industry="medical" class="nav-button font-medium text-gray-600 pb-1">Medical</button>
+                    <button data-industry="manufacturing" class="nav-button font-medium text-gray-600 pb-1">Manufacturing</button>
+                    <button data-industry="cross_industry" class="nav-button font-medium text-gray-600 pb-1">Cross-Industry</button>
+                </nav>
             </div>
         </div>
     </header>
 
-    <!-- Main Content -->
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-                <div class="post-preview">
-                    <a href="post.html">
-                        <h2 class="post-title">
-                            Man must explore, and this is exploration at its greatest
-                        </h2>
-                        <h3 class="post-subtitle">
-                            Problems look mighty small from 150 miles up
-                        </h3>
-                    </a>
-                    <p class="post-meta">Posted by <a href="#">Start Bootstrap</a> on September 24, 2014</p>
-                </div>
-                <hr>
-                <div class="post-preview">
-                    <a href="post.html">
-                        <h2 class="post-title">
-                            I believe every human has a finite number of heartbeats. I don't intend to waste any of mine.
-                        </h2>
-                    </a>
-                    <p class="post-meta">Posted by <a href="#">Start Bootstrap</a> on September 18, 2014</p>
-                </div>
-                <hr>
-                <div class="post-preview">
-                    <a href="post.html">
-                        <h2 class="post-title">
-                            Science has not yet mastered prophecy
-                        </h2>
-                        <h3 class="post-subtitle">
-                            We predict too much for the next year and yet far too little for the next ten.
-                        </h3>
-                    </a>
-                    <p class="post-meta">Posted by <a href="#">Start Bootstrap</a> on August 24, 2014</p>
-                </div>
-                <hr>
-                <div class="post-preview">
-                    <a href="post.html">
-                        <h2 class="post-title">
-                            Failure is not an option
-                        </h2>
-                        <h3 class="post-subtitle">
-                            Many say exploration is part of our destiny, but it’s actually our duty to future generations.
-                        </h3>
-                    </a>
-                    <p class="post-meta">Posted by <a href="#">Start Bootstrap</a> on July 8, 2014</p>
-                </div>
-                <hr>
-                <!-- Pager -->
-                <ul class="pager">
-                    <li class="next">
-                        <a href="#">Older Posts &rarr;</a>
-                    </li>
-                </ul>
+    <main class="container mx-auto p-4 sm:p-6 lg:p-8">
+
+        <!-- Overview Section -->
+        <section id="overview-content" class="content-section active">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">The Pervasive Impact of Artificial Intelligence</h2>
+                <p class="max-w-3xl mx-auto text-lg text-gray-600">AI has evolved from a futuristic concept into a practical, transformative force. This interactive report explores its real-world applications, benefits, and challenges across key industries, revealing a shift from simple automation to strategic augmentation of human capabilities.</p>
             </div>
-        </div>
-    </div>
 
-    <hr>
-
-    <!-- Footer -->
-    <footer>
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-                    <ul class="list-inline text-center">
-                        <li>
-                            <a href="#">
-                                <span class="fa-stack fa-lg">
-                                    <i class="fa fa-circle fa-stack-2x"></i>
-                                    <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
-                                </span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#">
-                                <span class="fa-stack fa-lg">
-                                    <i class="fa fa-circle fa-stack-2x"></i>
-                                    <i class="fa fa-facebook fa-stack-1x fa-inverse"></i>
-                                </span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#">
-                                <span class="fa-stack fa-lg">
-                                    <i class="fa fa-circle fa-stack-2x"></i>
-                                    <i class="fa fa-github fa-stack-1x fa-inverse"></i>
-                                </span>
-                            </a>
-                        </li>
-                    </ul>
-                    <p class="copyright text-muted">Copyright &copy; Your Website 2014</p>
+            <div class="grid md:grid-cols-2 gap-8 mb-12">
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <h3 class="font-bold text-xl mb-3 text-indigo-700">From Automation to Augmentation</h3>
+                    <p class="text-gray-700">A key trend across all sectors is AI's evolving role. Initially seen as a tool for automating repetitive tasks, AI is now strategically used to enhance complex, high-value human work. In banking, it speeds up high-friction workflows, while in healthcare, it frees professionals for direct patient care. This signifies a mature understanding of AI's value in amplifying human expertise, not just replacing it.</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <h3 class="font-bold text-xl mb-3 text-indigo-700">Data: The Foundation of AI</h3>
+                    <p class="text-gray-700">The effectiveness, accuracy, and trustworthiness of any AI system are directly dependent on the quality and security of its data. "Bad data" is a leading challenge, and privacy is a paramount concern. Robust data governance and infrastructure are not just compliance issues but fundamental prerequisites for successful and ethical AI deployment across all industries.</p>
                 </div>
             </div>
-        </div>
-    </footer>
 
-    <!-- jQuery -->
-    <script src="js/jquery.js"></script>
+            <div>
+                <h3 class="text-2xl font-bold text-center text-gray-800 mb-6">Global AI in Healthcare: A Growth Story</h3>
+                <p class="text-center text-gray-600 mb-6 max-w-2xl mx-auto">The projected growth of the AI market in healthcare alone highlights the increasing confidence and investment in these technologies. This chart illustrates the anticipated expansion, reflecting AI's deepening integration into critical sectors.</p>
+                <div class="bg-white p-4 sm:p-6 rounded-lg shadow-lg">
+                    <div class="chart-container">
+                        <canvas id="healthcareMarketChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
 
-    <!-- Bootstrap Core JavaScript -->
-    <script src="js/bootstrap.min.js"></script>
+        <!-- Dynamic Industry Section -->
+        <section id="dynamic-industry-content" class="content-section">
+            <div class="text-center mb-12">
+                <h2 id="industry-title" class="text-3xl md:text-4xl font-bold text-gray-900 mb-4"></h2>
+                <p id="industry-intro" class="max-w-3xl mx-auto text-lg text-gray-600"></p>
+            </div>
 
-    <!-- Custom Theme JavaScript -->
-    <script src="js/clean-blog.min.js"></script>
+            <div class="grid lg:grid-cols-2 gap-8">
+                <!-- Left Column: Applications & Benefits -->
+                <div>
+                    <h3 class="text-2xl font-bold text-gray-800 mb-4">Key Applications</h3>
+                    <div id="industry-apps" class="space-y-4"></div>
+                    
+                    <h3 class="text-2xl font-bold text-gray-800 mt-8 mb-4">Primary Benefits</h3>
+                    <div id="industry-benefits" class="grid grid-cols-1 sm:grid-cols-2 gap-4"></div>
+                </div>
+
+                <!-- Right Column: Chart & Key Tech -->
+                <div class="flex flex-col gap-8">
+                    <div class="bg-white p-4 sm:p-6 rounded-lg shadow-lg">
+                         <h3 id="industry-chart-title" class="text-xl font-bold text-center text-gray-800 mb-4"></h3>
+                         <p id="industry-chart-desc" class="text-center text-gray-600 mb-4 text-sm"></p>
+                        <div class="chart-container" style="height:350px;">
+                            <canvas id="industryChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-lg">
+                        <h3 class="text-xl font-bold text-gray-800 mb-4">Core Technologies</h3>
+                        <div id="industry-tech" class="flex flex-wrap gap-4 items-center justify-center"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Cross-Industry Section -->
+        <section id="cross_industry-content" class="content-section">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Cross-Industry Themes & Technologies</h2>
+                <p class="max-w-3xl mx-auto text-lg text-gray-600">While each industry has unique applications, they share common foundational technologies and face similar challenges in AI implementation. Understanding these themes provides a holistic view of the AI landscape.</p>
+            </div>
+
+            <div class="grid lg:grid-cols-2 gap-12">
+                <div>
+                    <h3 class="text-2xl font-bold text-gray-800 mb-6">Common Implementation Challenges</h3>
+                    <div id="challenges-accordion" class="space-y-3">
+                    </div>
+                </div>
+                <div>
+                    <h3 class="text-2xl font-bold text-gray-800 mb-6">AI Technology Usage Matrix</h3>
+                    <div class="bg-white p-4 sm:p-6 rounded-lg shadow-lg overflow-x-auto">
+                        <table class="min-w-full text-sm text-left">
+                            <thead class="bg-gray-100">
+                                <tr>
+                                    <th class="p-3 font-semibold">Technology</th>
+                                    <th class="p-3 font-semibold text-center">Finance</th>
+                                    <th class="p-3 font-semibold text-center">Medical</th>
+                                    <th class="p-3 font-semibold text-center">Manufacturing</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tech-matrix-body" class="divide-y divide-gray-200">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const industryData = {
+        finance: {
+            title: "AI in Finance",
+            intro: "The financial sector is undergoing a profound transformation, with AI reshaping everything from back-office operations to customer-facing services and strategic risk management.",
+            apps: [
+                { name: "Fraud Detection", desc: "Analyzing transactions in real-time to identify anomalies with up to 95% accuracy." },
+                { name: "Credit Risk Assessment", desc: "Using ML to predict defaults with greater accuracy than traditional models." },
+                { name: "Personalized Customer Service", desc: "AI chatbots and virtual assistants provide 24/7 support and tailored product recommendations." },
+                { name: "Algorithmic Trading", desc: "Reinforcement learning models adapt trading strategies to minimize risk and maximize returns." }
+            ],
+            benefits: [
+                { name: "Enhanced Security", icon: "🛡️" },
+                { name: "Improved Decision-Making", icon: "🧠" },
+                { name: "Operational Efficiency", icon: "⚙️" },
+                { name: "Increased Customer Loyalty", icon: "❤️" }
+            ],
+            chart: {
+                title: "AI Impact on Financial Metrics",
+                description: "AI significantly boosts key performance indicators in finance, from fraud detection to customer conversion.",
+                type: 'bar',
+                labels: ["Fraud Detection Accuracy", "Loan Processing Speed", "Customer Conversion Uplift"],
+                data: [95, 40, 25],
+                label: '% Improvement / Accuracy'
+            },
+            tech: ["ML", "NLP", "CV", "RL"]
+        },
+        medical: {
+            title: "AI in Medical & Healthcare",
+            intro: "AI is driving significant advancements in diagnostics, personalized treatment, drug discovery, and operational efficiency, promising a new era of patient care.",
+            apps: [
+                { name: "Enhanced Diagnostics", desc: "AI algorithms analyze medical images (X-rays, scans) to detect diseases like cancer earlier and more accurately." },
+                { name: "Personalized Medicine", desc: "Recommending tailored treatment plans based on a patient's genetic information and clinical history." },
+                { name: "Drug Discovery", desc: "Accelerating the identification of promising drug candidates by analyzing vast molecular datasets." },
+                { name: "Operational Efficiency", desc: "Automating administrative tasks like scheduling and billing, freeing up professionals for patient care." }
+            ],
+            benefits: [
+                { name: "Accurate Diagnoses", icon: "🩺" },
+                { name: "Tailored Therapies", icon: "💊" },
+                { name: "Accelerated R&D", icon: "🔬" },
+                { name: "Improved Patient Outcomes", icon: "❤️" }
+            ],
+            chart: {
+                title: "AI-Driven Diagnostic & Efficiency Gains",
+                description: "AI demonstrates remarkable improvements in both diagnostic accuracy and administrative efficiency in healthcare settings.",
+                type: 'bar',
+                labels: ["Diagnostic Accuracy (vs Human)", "Documentation Time Reduction"],
+                data: [85, 40],
+                label: '% Accuracy / Reduction'
+            },
+            tech: ["ML", "NLP", "CV", "Generative AI"]
+        },
+        manufacturing: {
+            title: "AI in Manufacturing",
+            intro: "As a cornerstone of Industry 4.0, AI enhances efficiency, precision, and adaptability across the entire production lifecycle, from design to maintenance.",
+            apps: [
+                { name: "Predictive Maintenance", desc: "Forecasting machinery failures before they occur, reducing unplanned downtime and saving costs." },
+                { name: "Generative Design", desc: "Using algorithms to generate thousands of optimized product design options based on set parameters." },
+                { name: "Digital Twins", desc: "Creating virtual replicas of processes and production lines to simulate, analyze, and optimize performance." },
+                { name: "Cobots (Collaborative Robots)", desc: "Working alongside humans to handle repetitive or physically demanding tasks, boosting productivity and safety." }
+            ],
+            benefits: [
+                { name: "Reduced Downtime", icon: "⏱️" },
+                { name: "Accelerated Innovation", icon: "💡" },
+                { name: "Optimized Production", icon: "🏭" },
+                { name: "Enhanced Safety", icon: "👷" }
+            ],
+            chart: {
+                title: "AI's Boost to Production Capacity",
+                description: "By minimizing downtime, AI-powered predictive maintenance directly translates to thousands of extra hours of production capacity.",
+                type: 'bar',
+                labels: ["Increased Production Capacity (Hours)", "Aerodynamics Prediction Speedup (Factor)"],
+                data: [4000, 120000],
+                label: 'Value'
+            },
+            tech: ["ML", "Generative AI", "CV", "RL"]
+        }
+    };
+
+    const crossIndustry = {
+        challenges: [
+            { title: "Data Quality & Privacy", content: "AI's effectiveness is tied to high-quality, secure data. Fragmented or poor data leads to inaccurate results, while privacy concerns require robust governance." },
+            { title: "High Cost & Expertise Gap", content: "Significant upfront investment and a shortage of skilled AI professionals are major barriers to adoption, especially for smaller organizations." },
+            { title: "Legacy System Integration", content: "Integrating modern AI with outdated IT infrastructure is a complex and costly challenge for many established institutions." },
+            { title: "Ethical Concerns & Bias", content: "AI models can perpetuate biases from training data, leading to unfair outcomes. Transparency and ethical oversight are critical." },
+            { title: "Change Management", content: "Overcoming employee resistance and fostering a culture that embraces AI-human collaboration is essential for successful implementation." }
+        ],
+        techMatrix: [
+            { tech: "Machine Learning (ML)", finance: true, medical: true, manufacturing: true },
+            { tech: "Natural Language Processing (NLP)", finance: true, medical: true, manufacturing: false },
+            { tech: "Computer Vision (CV)", finance: true, medical: true, manufacturing: true },
+            { tech: "Generative AI", finance: false, medical: true, manufacturing: true },
+            { tech: "Reinforcement Learning (RL)", finance: true, medical: false, manufacturing: true }
+        ]
+    };
+
+    const navButtons = document.querySelectorAll('.nav-button');
+    const contentSections = document.querySelectorAll('.content-section');
+    const dynamicSection = document.getElementById('dynamic-industry-content');
+    let currentChart = null;
+    let healthcareChart = null;
+
+    function updateView(industry) {
+        navButtons.forEach(btn => {
+            btn.classList.toggle('active', btn.dataset.industry === industry);
+        });
+
+        contentSections.forEach(section => {
+            section.classList.remove('active');
+        });
+
+        if (industry === 'overview') {
+            document.getElementById('overview-content').classList.add('active');
+            if (!healthcareChart) createHealthcareChart();
+        } else if (industry === 'cross_industry') {
+            document.getElementById('cross_industry-content').classList.add('active');
+            populateCrossIndustry();
+        } else {
+            dynamicSection.classList.add('active');
+            populateIndustryData(industry);
+        }
+    }
+
+    function populateIndustryData(industry) {
+        const data = industryData[industry];
+        if (!data) return;
+
+        document.getElementById('industry-title').textContent = data.title;
+        document.getElementById('industry-intro').textContent = data.intro;
+
+        const appsContainer = document.getElementById('industry-apps');
+        appsContainer.innerHTML = data.apps.map(app => `
+            <div class="bg-white p-4 rounded-lg shadow-sm border-l-4 border-indigo-500">
+                <h4 class="font-semibold text-gray-800">${app.name}</h4>
+                <p class="text-gray-600 text-sm">${app.desc}</p>
+            </div>
+        `).join('');
+
+        const benefitsContainer = document.getElementById('industry-benefits');
+        benefitsContainer.innerHTML = data.benefits.map(benefit => `
+            <div class="bg-white p-4 rounded-lg shadow-sm flex items-center">
+                <span class="text-2xl mr-3">${benefit.icon}</span>
+                <span class="font-medium text-gray-700">${benefit.name}</span>
+            </div>
+        `).join('');
+
+        const techContainer = document.getElementById('industry-tech');
+        techContainer.innerHTML = data.tech.map(t => `
+            <span class="bg-indigo-100 text-indigo-800 text-sm font-medium px-3 py-1 rounded-full">${t}</span>
+        `).join('');
+
+        document.getElementById('industry-chart-title').textContent = data.chart.title;
+        document.getElementById('industry-chart-desc').textContent = data.chart.description;
+        createIndustryChart(data.chart);
+    }
+    
+    function populateCrossIndustry() {
+        const accordionContainer = document.getElementById('challenges-accordion');
+        accordionContainer.innerHTML = crossIndustry.challenges.map((challenge, index) => `
+            <div class="bg-white rounded-lg shadow-sm">
+                <button class="accordion-toggle w-full flex justify-between items-center p-4 font-semibold text-left text-gray-800">
+                    <span>${challenge.title}</span>
+                    <span class="transform transition-transform duration-300">▼</span>
+                </button>
+                <div class="accordion-content px-4 pb-4 text-gray-600">
+                    <p>${challenge.content}</p>
+                </div>
+            </div>
+        `).join('');
+        
+        const matrixContainer = document.getElementById('tech-matrix-body');
+        matrixContainer.innerHTML = crossIndustry.techMatrix.map(row => `
+            <tr>
+                <td class="p-3 font-medium">${row.tech}</td>
+                <td class="p-3 text-center">${row.finance ? '<span class="text-green-500 text-xl">●</span>' : '<span class="text-gray-300 text-xl">-</span>'}</td>
+                <td class="p-3 text-center">${row.medical ? '<span class="text-green-500 text-xl">●</span>' : '<span class="text-gray-300 text-xl">-</span>'}</td>
+                <td class="p-3 text-center">${row.manufacturing ? '<span class="text-green-500 text-xl">●</span>' : '<span class="text-gray-300 text-xl">-</span>'}</td>
+            </tr>
+        `).join('');
+        
+        addAccordionListeners();
+    }
+
+    function addAccordionListeners() {
+        document.querySelectorAll('.accordion-toggle').forEach(button => {
+            button.addEventListener('click', () => {
+                const content = button.nextElementSibling;
+                const icon = button.querySelector('span:last-child');
+                
+                if (content.style.maxHeight) {
+                    content.style.maxHeight = null;
+                    icon.style.transform = 'rotate(0deg)';
+                } else {
+                    document.querySelectorAll('.accordion-content').forEach(c => c.style.maxHeight = null);
+                    document.querySelectorAll('.accordion-toggle span:last-child').forEach(i => i.style.transform = 'rotate(0deg)');
+                    content.style.maxHeight = content.scrollHeight + "px";
+                    icon.style.transform = 'rotate(180deg)';
+                }
+            });
+        });
+    }
+
+    function createIndustryChart(chartData) {
+        const ctx = document.getElementById('industryChart').getContext('2d');
+        if (currentChart) {
+            currentChart.destroy();
+        }
+        currentChart = new Chart(ctx, {
+            type: chartData.type,
+            data: {
+                labels: chartData.labels,
+                datasets: [{
+                    label: chartData.label,
+                    data: chartData.data,
+                    backgroundColor: 'rgba(79, 70, 229, 0.6)',
+                    borderColor: 'rgba(79, 70, 229, 1)',
+                    borderWidth: 1,
+                    borderRadius: 5,
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        grid: { color: 'rgba(0,0,0,0.05)' }
+                    },
+                    x: {
+                        grid: { display: false }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    tooltip: {
+                        backgroundColor: '#212529',
+                        titleFont: { size: 14 },
+                        bodyFont: { size: 12 },
+                        padding: 10,
+                        cornerRadius: 4
+                    }
+                }
+            }
+        });
+    }
+
+    function createHealthcareChart() {
+        const ctx = document.getElementById('healthcareMarketChart').getContext('2d');
+        healthcareChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: ['2024', '2026', '2028', '2030', '2032'],
+                datasets: [{
+                    label: 'Market Value ($ Billions)',
+                    data: [29.01, 87.45, 189.33, 345.89, 504.17],
+                    fill: true,
+                    backgroundColor: 'rgba(79, 70, 229, 0.1)',
+                    borderColor: 'rgba(79, 70, 229, 1)',
+                    tension: 0.4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: { display: true, text: 'Market Value ($ Billions)' },
+                        grid: { color: 'rgba(0,0,0,0.05)' }
+                    },
+                    x: {
+                        grid: { display: false }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    tooltip: {
+                        backgroundColor: '#212529',
+                        titleFont: { size: 14 },
+                        bodyFont: { size: 12 },
+                        padding: 10,
+                        cornerRadius: 4,
+                        callbacks: {
+                            label: function(context) {
+                                return `Market Value: $${context.parsed.y.toFixed(2)} Billion`;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    navButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            updateView(button.dataset.industry);
+        });
+    });
+
+    updateView('overview');
+});
+</script>
 
 </body>
-
 </html>
